@@ -22,7 +22,7 @@ mongodb.connect("mongodb+srv://islamdebbi6:ifyouwantitcome@users.2ooqx.mongodb.n
 
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send('hi karim && sabir i want to nal3blk biha');
 });
 
 app.get('/test', (req, res) => {
