@@ -25,6 +25,99 @@ app.get('/', (req, res) => {
   res.send('hi karim && sabir i want to nal3blk biha');
 });
 
+
+
+
+
+app.post('/users',async (req, res) => { 
+    const {name, age, email, password ,Date} = req.body;
+    const newUser = new user({
+         name : name,
+         age : age,
+         email : email,
+        password : password,
+        Date : Date
+    });
+    await newUser.save();
+    res.send('user added successfully');
+});  
+
+app.get('/users', async (req, res) => {
+    
+    const users = await user.find();
+    console.log('users:', users);   
+    res.json(users);
+
+});
+
+app.get('/users/:userid', async (req, res) => {
+    const id = req.params.userid;
+    try {
+        const users = await user.findById(id);
+        res.json(users);
+    } catch (error) {
+        res.send('user not found'+error);
+        console.log('error:', error);
+    }
+    
+});
+app.delete('/users/:userid', async (req, res) => {
+    const id = req.params.userid;
+    try {
+        const users = await user.findByIdAndDelete(id);
+        console.log('user deleted :', users);
+        res.send('user deleted successfully');
+    } catch (error) {
+        res.send('user not found'+error);
+        console.log('error:', error);
+    }
+    
+});
+
+// update user 
+app.put('/users/:userid', async (req, res) => {
+    const id = req.params.userid;
+    const {name, age, email, password } = req.body;
+    try {
+        const users = await user.findByIdAndUpdate(id, {
+            name : name,
+            age : age,
+            email : email,
+            password : password,
+        });
+        console.log('users:', users);
+        res.send('user updated successfully');
+    } catch (error) {
+        res.send('user not found'+error);
+        console.log('error:', error);
+    }
+    
+});
+
+// update user by email
+app.put('/users/:useremail', async (req, res) => {
+    const email = req.params.useremail;
+    const {name, age, password } = req.body;
+    try {
+        const users = await user.findOneAndUpdate({email: email}, {
+            name : name,
+            age : age,
+            password : password,
+        });
+        console.log('users:', users);
+        res.send('user updated successfully');
+    } catch (error) {
+        res.send('user not found'+error);
+        console.log('error:', error);
+    }
+    
+});
+
+
+
+
+
+// this is test code
 app.get('/test', (req, res) => {
     res.send('test  ....');
   });
@@ -88,50 +181,3 @@ app.listen(port, () => {
 
 // i connect the server by nodemon app.js
 // i will use postman to test the api
-
-
-
-
-app.post('/users',async (req, res) => { 
-    const {name, age, email, password } = req.body;
-    const newUser = new user({
-         name : name,
-         age : age,
-         email : email,
-        password : password
-    });
-    console.log('newUser:', newUser);
-    await newUser.save();
-    res.send('user added successfully');
-});  
-
-app.get('/users', async (req, res) => {
-    
-    const users = await user.find();
-    console.log('users:', users);
-    res.json(users);
-
-});
-
-app.get('/users/:userid', async (req, res) => {
-    const id = req.params.userid;
-    try {
-        const users = await user.findById(id);
-        res.json(users);
-    } catch (error) {
-        res.send('user not found'+error);
-        console.log('error:', error);
-    }
-    
-});
-app.delete('/users/:userid', async (req, res) => {
-    const id = req.params.userid;
-    try {
-        const users = await user.findByIdAndDelete(id);
-        res.send('user deleted successfully');
-    } catch (error) {
-        res.send('user not found'+error);
-        console.log('error:', error);
-    }
-    
-});
