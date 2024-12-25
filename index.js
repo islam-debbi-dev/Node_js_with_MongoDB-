@@ -95,19 +95,22 @@ app.listen(port, () => {
 app.post('/users',async (req, res) => { 
     const {name, age, email, password } = req.body;
     const newUser = new user({
-         name,
-         age,
-         email,
-        password
+         name : name,
+         age : age,
+         email : email,
+        password : password
     });
-
+    console.log('newUser:', newUser);
     await newUser.save();
     res.send('user added successfully');
 });  
 
 app.get('/users', async (req, res) => {
+    
     const users = await user.find();
+    console.log('users:', users);
     res.json(users);
+
 });
 
 app.get('/users/:userid', async (req, res) => {
